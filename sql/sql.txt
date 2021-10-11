@@ -1,0 +1,47 @@
+CREATE DATABASE IF NOT EXISTS timeseries_db;
+
+USE timeseries_db;
+CREATE ROWSTORE TABLE IF NOT EXISTS tick ( 
+     ts     DATETIME SERIES TIMESTAMP, 
+     symbol VARCHAR(5), 
+     price  NUMERIC(18, 4),
+     KEY(ts)
+);
+
+-- Average Aggregate
+SELECT symbol, AVG(price)
+FROM tick
+GROUP BY symbol
+ORDER BY symbol;
+
+-- Time Bucketing
+SELECT symbol, TIME_BUCKET("5d", ts), AVG(price)
+FROM tick
+WHERE symbol = "AAPL"
+GROUP BY 1, 2
+ORDER BY 1, 2;
+
+SELECT TIME_BUCKET("5d") AS ts,
+     symbol,
+     MIN(price) AS low,
+     MAX(price) AS high,
+     FIRST(price) AS open,
+     LAST(price) AS close
+FROM tick
+WHERE symbol = "AAPL"
+GROUP BY 2, 1
+ORDER BY 2, 1;
+
+-- Smoothing
+SELECT symbol, ts, price, AVG(price)
+OVER (ORDER BY ts ROWS BETWEEN 3 PRECEDING AND CURRENT ROW) AS smoothed_price
+FROM tick
+WHERE symbol = "AAPL";
+
+-- AS OF
+SELECT *
+FROM tick
+WHERE ts <= "2021-10-11 00:00:00"
+AND symbol = "AAPL"
+ORDER BY ts DESC
+LIMIT 1;
