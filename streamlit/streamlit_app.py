@@ -6,8 +6,6 @@ import plotly.graph_objects as go
 import pymysql
 
 # Initialize connection.
-# Uses st.cache to only run once.
-@st.cache(allow_output_mutation=True, hash_funcs={"_thread.RLock": lambda _: None})
 
 def init_connection():
     return pymysql.connect(**st.secrets["singlestore"])
