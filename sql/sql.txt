@@ -1,6 +1,7 @@
 CREATE DATABASE IF NOT EXISTS timeseries_db;
 
 USE timeseries_db;
+
 CREATE ROWSTORE TABLE IF NOT EXISTS tick ( 
      ts     DATETIME SERIES TIMESTAMP, 
      symbol VARCHAR(5), 
@@ -21,6 +22,7 @@ WHERE symbol = "AAPL"
 GROUP BY 1, 2
 ORDER BY 1, 2;
 
+-- Candlestick
 SELECT TIME_BUCKET("5d") AS ts,
      symbol,
      MIN(price) AS low,
