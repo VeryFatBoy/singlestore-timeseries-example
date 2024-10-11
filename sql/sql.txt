@@ -2,11 +2,12 @@ CREATE DATABASE IF NOT EXISTS timeseries_db;
 
 USE timeseries_db;
 
+DROP TABLE IF EXISTS tick;
 CREATE ROWSTORE TABLE IF NOT EXISTS tick (
-     ts     DATETIME SERIES TIMESTAMP,
-     symbol VARCHAR(5),
-     price  NUMERIC(18, 4),
-     KEY(ts)
+    ts     DATETIME SERIES TIMESTAMP,
+    symbol VARCHAR(5),
+    price  NUMERIC(18, 4),
+    KEY(ts)
 );
 
 -- Average Aggregate
