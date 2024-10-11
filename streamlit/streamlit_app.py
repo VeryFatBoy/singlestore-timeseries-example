@@ -29,7 +29,6 @@ ORDER BY symbol, day;
 
 data = conn.query(stmt, params = {"symbol": symbol})
 
-# Check if data was returned
 if not data.empty:
     st.subheader(symbol)
 
@@ -48,6 +47,6 @@ if not data.empty:
 
     st.plotly_chart(fig, use_container_width = True)
 else:
-    st.write("No data found for the symbol.")
+    st.write("No data found for the symbol")
 
 st.write(data)
